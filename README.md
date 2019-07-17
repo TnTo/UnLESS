@@ -1,2 +1,2 @@
 # UnLESS
-Unsupervised Learning for Electoral Systems' Study
+Unsupervised Learning for Electoral Systems' Studies
