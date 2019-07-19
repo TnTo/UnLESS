@@ -1,0 +1,170 @@
+[
+    [
+        "set_seed",
+        {
+            "seed": 1243
+        }
+    ],
+    [
+        "create",
+        {
+            "nn_path": "data/nn3j.h5",
+            "layers": [
+                [
+                    1000,
+                    "relu",
+                    448
+                ],
+                [
+                    1000,
+                    "relu"
+                ],
+                [
+                    1,
+                    "linear"
+                ]
+            ]
+        }
+    ],
+    [
+        "load_nl",
+        {
+            "nl_path": "electoral_system.nlogo"
+        }
+    ],
+    [
+        "simulate",
+        {
+            "nn_path": "data/nn3j.h5",
+            "seed": 1243,
+            "n_electors": 1000,
+            "x_opinion": "unimodal",
+            "y_opinion": "bimodal",
+            "show_electors": false,
+            "data_path": "data/e3jr.csv",
+            "n_parties_t0": 2,
+            "p_new_party": 0,
+            "safe_time_after_birth": 0,
+            "time_without_seats_before_death": 5000,
+            "step_distance": 0.5,
+            "parties_see_electors": false,
+            "electoral_system": "plurality",
+            "total_seats": 1,
+            "max_ticks": 5000,
+            "epsilon": 0,
+            "append": false
+        }
+    ],
+    [
+        "train",
+        {
+            "nn_path": "data/nn3j.h5",
+            "data_path": "data/e3jr.csv",
+            "target": "votes",
+            "parties_see_electors": false,
+            "gamma": 0,
+            "epochs": 20
+        }
+    ],
+    [
+        "loop",
+        {
+            "n_iter": 20,
+            "actions": [
+                [
+                    "simulate_no_reset",
+                    {
+                        "data_path": "data/e3j.csv",
+                        "max_ticks": 250,
+                        "epsilon": 0.5,
+                        "append": false
+                    }
+                ],
+                [
+                    "train",
+                    {
+                        "nn_path": "data/nn3j.h5",
+                        "data_path": "data/e3j.csv",
+                        "target": "votes",
+                        "parties_see_electors": false,
+                        "gamma": 0.95,
+                        "epochs": 20
+                    }
+                ]
+            ]
+        }
+    ],
+    [
+        "loop",
+        {
+            "n_iter": 20,
+            "actions": [
+                [
+                    "simulate_no_reset",
+                    {
+                        "max_ticks": 500,
+                        "epsilon": 0.5,
+                        "append": true
+                    }
+                ],
+                [
+                    "train",
+                    {
+                        "nn_path": "data/nn3j.h5",
+                        "data_path": "data/e3j.csv",
+                        "target": "votes",
+                        "parties_see_electors": false,
+                        "gamma": 0.95,
+                        "epochs": 20
+                    }
+                ]
+            ]
+        }
+    ],
+    [
+        "loop",
+        {
+            "n_iter": 30,
+            "actions": [
+                [
+                    "simulate_no_reset",
+                    {
+                        "seed": 0,
+                        "max_ticks": 500,
+                        "epsilon": 0.9,
+                        "append": false
+                    }
+                ],
+                [
+                    "train",
+                    {
+                        "nn_path": "data/nn3j.h5",
+                        "data_path": "data/e3j.csv",
+                        "target": "votes",
+                        "parties_see_electors": false,
+                        "gamma": 0.95,
+                        "epochs": 20
+                    }
+                ]
+            ]
+        }
+    ],
+    [
+        "loop",
+        {
+            "n_iter": 10,
+            "actions": [
+                [
+                    "simulate_no_reset",
+                    {
+                        "max_ticks": 500,
+                        "data_path": "data/e3jt.csv",
+                        "epsilon": 1,
+                        "step_distance":0.5,
+                        "append": true
+                    }
+                ]
+            ]
+        }
+    ]
+]

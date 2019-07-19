@@ -1,0 +1,142 @@
+[
+    [
+        "set_seed",
+        {
+            "seed": 1236
+        }
+    ],
+    [
+        "create",
+        {
+            "nn_path": "data/nn1c.h5",
+            "layers": [
+                [
+                    1000,
+                    "relu",
+                    448
+                ],
+                [
+                    1000,
+                    "relu"
+                ],
+                [
+                    1,
+                    "linear"
+                ]
+            ]
+        }
+    ],
+    [
+        "load_nl",
+        {
+            "nl_path": "electoral_system.nlogo"
+        }
+    ],
+    [
+        "simulate",
+        {
+            "nn_path": "data/nn1c.h5",
+            "seed": 1236,
+            "n_electors": 1000,
+            "x_opinion": "unimodal",
+            "y_opinion": "bimodal",
+            "show_electors": false,
+            "data_path": "data/e1cr.csv",
+            "n_parties_t0": 1,
+            "p_new_party": 0,
+            "safe_time_after_birth": 0,
+            "time_without_seats_before_death": 10,
+            "step_distance": 0.5,
+            "parties_see_electors": true,
+            "electoral_system": "plurality",
+            "total_seats": 1,
+            "max_ticks": 10000,
+            "epsilon": 0,
+            "append": false
+        }
+    ],
+    [
+        "train",
+        {
+            "nn_path": "data/nn1c.h5",
+            "data_path": "data/e1cr.csv",
+            "target": "votes",
+            "parties_see_electors": true,
+            "gamma": 0,
+            "epochs": 100
+        }
+    ],
+    [
+        "loop",
+        {
+            "n_iter": 10,
+            "actions": [
+                [
+                    "simulate_no_reset",
+                    {
+                        "data_path": "data/e1c.csv",
+                        "max_ticks": 250,
+                        "epsilon": 0.5,
+                        "append": false
+                    }
+                ],
+                [
+                    "train",
+                    {
+                        "nn_path": "data/nn1c.h5",
+                        "data_path": "data/e1c.csv",
+                        "target": "votes",
+                        "parties_see_electors": true,
+                        "gamma": 0.95,
+                        "epochs": 10
+                    }
+                ]
+            ]
+        }
+    ],
+    [
+        "loop",
+        {
+            "n_iter": 10,
+            "actions": [
+                [
+                    "simulate_no_reset",
+                    {
+                        "max_ticks": 500,
+                        "epsilon": 0.9,
+                        "append": true
+                    }
+                ],
+                [
+                    "train",
+                    {
+                        "nn_path": "data/nn1c.h5",
+                        "data_path": "data/e1c.csv",
+                        "target": "votes",
+                        "parties_see_electors": true,
+                        "gamma": 0.95,
+                        "epochs": 25
+                    }
+                ]
+            ]
+        }
+    ],
+    [
+        "loop",
+        {
+            "n_iter": 10,
+            "actions": [
+                [
+                    "simulate_no_reset",
+                    {
+                        "max_ticks": 500,
+                        "data_path": "data/e1ct.csv",
+                        "epsilon": 1,
+                        "step_distance":0.5,
+                        "append": true
+                    }
+                ]
+            ]
+        }
+    ]
+]
